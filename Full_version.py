@@ -95,5 +95,6 @@ class FullVersion(datasets.GeneratorBasedBuilder):
                 else:
                     yield count, {
                         "image": Image.open(datafile),
-                        "label": os.path.basename(tmp_folder).lower(),
+                        # "label": os.path.basename(tmp_folder).lower(),
+                        "label": int(-8)
                     }
