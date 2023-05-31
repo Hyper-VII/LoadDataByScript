@@ -17,7 +17,7 @@ _URLs = {
     "test_set": "load_archive_data/test_set.zip",
 }
 
-_URLss = 'load_folder/train_set/airplane/'
+_URLss = 'load_archive_data/train_set.zip'
 
 
 
@@ -54,6 +54,7 @@ class FullVersion(datasets.GeneratorBasedBuilder):
             features=datasets.Features(
                 {
                     "image": datasets.Image(),
+                    # 等效 datasets.features.ClassLabel(10)
                     "label": datasets.features.ClassLabel(names=_NAMES),
                 }
             ),
@@ -66,40 +67,28 @@ class FullVersion(datasets.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager):
         # 返回数据集的路径
-        download_and_extract_path = dl_manager.iter_files(_URLss)
+        # download_and_extract_path = dl_manager.iter_files(_URLss)
         # download_and_extract_path = dl_manager.iter_archive(_URLss)
-        for i in download_and_extract_path:
-            print('111111111111111{}'.format(i))
         # download_and_extract_path = dl_manager.extract(_URLs)
         # download_and_extract_path = dl_manager.download(_URLss)
-        # download_and_extract_path = dl_manager.download_and_extract(_URLs)
-        # print('path:{}'.format(download_and_extract_path))
-        # download_and_extract_path = dl_manager.download(_URLs)
-        # return [
-        #     datasets.SplitGenerator(
-        #         name=datasets.Split.TRAIN,
-        #         gen_kwargs={
-        #             "filepath": download_and_extract_path['train_set'],
-        #             "split": "train_set",
-        #         },
-        #     ),
-        #     datasets.SplitGenerator(
-        #         name=datasets.Split.TEST,
-        #         gen_kwargs={
-        #             "filepath": download_and_extract_path['test_set'],
-        #             "split": "test_set",
-        #         },
-        #     ),
-        # ]
+        download_and_extract_path = dl_manager.download_and_extract(_URLs)
         return [
             datasets.SplitGenerator(
                 name=datasets.Split.TRAIN,
                 gen_kwargs={
-                    "filepath": download_and_extract_path,
+                    "filepath": download_and_extract_path['train_set'],
                     "split": "train_set",
                 },
             ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST,
+                gen_kwargs={
+                    "filepath": download_and_extract_path['test_set'],
+                    "split": "test_set",
+                },
+            ),
         ]
+
 
 
 
@@ -118,5 +107,4 @@ class FullVersion(datasets.GeneratorBasedBuilder):
                     yield count, {
                         "image": Image.open(datafile),
                         "label": os.path.basename(tmp_folder).lower(),
-                        # "label": int(8)
                     }
