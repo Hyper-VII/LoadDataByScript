@@ -6,9 +6,12 @@ Lite Version:
     
 Full Version:
     包含较为完整的info,config等信息
-    
-根据实际需求自行修改path
 '''
 
-data = load_dataset('Full_version.py', 'dataset-name1')
+
+
+data = load_dataset('Lite_version.py')
 print(data['train'][:10])
+
+# data = load_dataset('Full_version.py', 'dataset-name1')
+# print(data['train'][:10])
